@@ -1,9 +1,54 @@
 import { Injectable } from '@nestjs/common';
-import { PrismaService } from '../prisma/prisma.service';
+import * as fs from 'fs';
+import * as path from 'path';
+
+interface Station {
+  id: string;
+  name: string;
+  address: string;
+  latitude: number;
+  longitude: number;
+  stellarWallet: string;
+}
 
 @Injectable()
 export class StationsService {
-  constructor(private prisma: PrismaService) {}
+  private stations: Station[] = [];
+
+  constructor() {
+    // Carregar estações do arquivo JSON
+    this.loadStations();
+  }
+
+  private loadStations() {
+    try {
+      // Tentar diferentes caminhos (desenvolvimento e produção)
+      const possiblePaths = [
+        path.join(__dirname, '../data/stations.json'), // Build
+        path.join(__dirname, '../../src/data/stations.json'), // Desenvolvimento
+        path.join(process.cwd(), 'src/data/stations.json'), // Fallback
+      ];
+
+      let stationsData: string | null = null;
+      for (const stationsPath of possiblePaths) {
+        if (fs.existsSync(stationsPath)) {
+          stationsData = fs.readFileSync(stationsPath, 'utf-8');
+          break;
+        }
+      }
+
+      if (!stationsData) {
+        throw new Error('Arquivo stations.json não encontrado em nenhum caminho');
+      }
+
+      this.stations = JSON.parse(stationsData);
+      console.log(`✅ ${this.stations.length} estações carregadas do JSON`);
+    } catch (error) {
+      console.error('❌ Erro ao carregar estações do JSON:', error);
+      // Fallback: estações vazias
+      this.stations = [];
+    }
+  }
 
   /**
    * Calcula distância entre dois pontos usando fórmula de Haversine
@@ -46,11 +91,8 @@ export class StationsService {
     radius: number = 5000,
     limit: number = 5,
   ) {
-    // Busca todas as estações
-    const allStations = await this.prisma.station.findMany();
-
     // Calcula distância para todas as estações
-    const stationsWithDistance = allStations
+    const stationsWithDistance = this.stations
       .map((station) => {
         const distance = this.calculateDistance(
           latitude,
@@ -82,16 +124,14 @@ export class StationsService {
   /**
    * Busca estação por ID
    */
-  async findById(id: string) {
-    return this.prisma.station.findUnique({
-      where: { id },
-    });
+  async findById(id: string): Promise<Station | null> {
+    return this.stations.find((station) => station.id === id) || null;
   }
 
   /**
    * Lista todas as estações
    */
-  async findAll() {
-    return this.prisma.station.findMany();
+  async findAll(): Promise<Station[]> {
+    return this.stations;
   }
 }

@@ -1,0 +1,179 @@
+[
+  {
+    "id": "1",
+    "name": "Restaurante Popular Copacabana",
+    "address": "Rua Barata Ribeiro, 200 - Copacabana, Rio de Janeiro - RJ",
+    "latitude": -22.9711,
+    "longitude": -43.1822,
+    "stellarWallet": ""
+  },
+  {
+    "id": "2",
+    "name": "Cozinha Comunitária Ipanema",
+    "address": "Rua Visconde de Pirajá, 500 - Ipanema, Rio de Janeiro - RJ",
+    "latitude": -22.9844,
+    "longitude": -43.1944,
+    "stellarWallet": ""
+  },
+  {
+    "id": "3",
+    "name": "Refeitório Social Botafogo",
+    "address": "Rua Voluntários da Pátria, 300 - Botafogo, Rio de Janeiro - RJ",
+    "latitude": -22.9508,
+    "longitude": -43.1836,
+    "stellarWallet": ""
+  },
+  {
+    "id": "4",
+    "name": "Restaurante Popular Centro",
+    "address": "Rua da Carioca, 100 - Centro, Rio de Janeiro - RJ",
+    "latitude": -22.9068,
+    "longitude": -43.1729,
+    "stellarWallet": ""
+  },
+  {
+    "id": "5",
+    "name": "Casa de Alimentação Lapa",
+    "address": "Rua do Lavradio, 200 - Lapa, Rio de Janeiro - RJ",
+    "latitude": -22.9111,
+    "longitude": -43.1800,
+    "stellarWallet": ""
+  },
+  {
+    "id": "6",
+    "name": "Restaurante Popular Tijuca",
+    "address": "Rua Conde de Bonfim, 1000 - Tijuca, Rio de Janeiro - RJ",
+    "latitude": -22.9258,
+    "longitude": -43.2400,
+    "stellarWallet": ""
+  },
+  {
+    "id": "7",
+    "name": "Cozinha Comunitária Méier",
+    "address": "Rua Dias da Cruz, 500 - Méier, Rio de Janeiro - RJ",
+    "latitude": -22.9000,
+    "longitude": -43.2800,
+    "stellarWallet": ""
+  },
+  {
+    "id": "8",
+    "name": "Refeitório Social Barra da Tijuca",
+    "address": "Avenida das Américas, 2000 - Barra da Tijuca, Rio de Janeiro - RJ",
+    "latitude": -23.0065,
+    "longitude": -43.3644,
+    "stellarWallet": ""
+  },
+  {
+    "id": "9",
+    "name": "Restaurante Popular Campo Grande",
+    "address": "Rua Dom Pedro II, 500 - Campo Grande, Rio de Janeiro - RJ",
+    "latitude": -22.9000,
+    "longitude": -43.5600,
+    "stellarWallet": ""
+  },
+  {
+    "id": "10",
+    "name": "Casa de Alimentação Madureira",
+    "address": "Rua Carolina Machado, 300 - Madureira, Rio de Janeiro - RJ",
+    "latitude": -22.8700,
+    "longitude": -43.3400,
+    "stellarWallet": ""
+  },
+  {
+    "id": "11",
+    "name": "Restaurante Popular Penha",
+    "address": "Rua Itapiru, 500 - Penha, Rio de Janeiro - RJ",
+    "latitude": -22.8200,
+    "longitude": -43.2900,
+    "stellarWallet": ""
+  },
+  {
+    "id": "12",
+    "name": "Cozinha Comunitária Bonsucesso",
+    "address": "Rua Teixeira Ribeiro, 200 - Bonsucesso, Rio de Janeiro - RJ",
+    "latitude": -22.8500,
+    "longitude": -43.2500,
+    "stellarWallet": ""
+  },
+  {
+    "id": "13",
+    "name": "Refeitório Social Ramos",
+    "address": "Rua Uranos, 100 - Ramos, Rio de Janeiro - RJ",
+    "latitude": -22.8800,
+    "longitude": -43.2200,
+    "stellarWallet": ""
+  },
+  {
+    "id": "14",
+    "name": "Cozinha Comunitária Vila Torres",
+    "address": "Rua da Cidadania Vila Torres - Vila Torres, Curitiba - PR",
+    "latitude": -25.435,
+    "longitude": -49.28,
+    "stellarWallet": ""
+  },
+  {
+    "id": "15",
+    "name": "Restaurante Popular Boqueirão",
+    "address": "Rua da Cidadania Boqueirão - Boqueirão, Curitiba - PR",
+    "latitude": -25.45,
+    "longitude": -49.29,
+    "stellarWallet": ""
+  },
+  {
+    "id": "16",
+    "name": "Cozinha Comunitária Pinheirinho",
+    "address": "Rua da Cidadania Pinheirinho - Pinheirinho, Curitiba - PR",
+    "latitude": -25.42,
+    "longitude": -49.26,
+    "stellarWallet": ""
+  },
+  {
+    "id": "17",
+    "name": "Restaurante Popular CIC",
+    "address": "Rua da Cidadania CIC - CIC, Curitiba - PR",
+    "latitude": -25.44,
+    "longitude": -49.3,
+    "stellarWallet": ""
+  },
+  {
+    "id": "18",
+    "name": "Cozinha Comunitária Tatuquara",
+    "address": "Rua da Cidadania Tatuquara - Tatuquara, Curitiba - PR",
+    "latitude": -25.46,
+    "longitude": -49.31,
+    "stellarWallet": ""
+  },
+  {
+    "id": "19",
+    "name": "Restaurante Popular Bairro Novo",
+    "address": "Rua da Cidadania Bairro Novo - Bairro Novo, Curitiba - PR",
+    "latitude": -25.47,
+    "longitude": -49.32,
+    "stellarWallet": ""
+  },
+  {
+    "id": "20",
+    "name": "Cozinha Comunitária Cajuru",
+    "address": "Rua da Cidadania Cajuru - Cajuru, Curitiba - PR",
+    "latitude": -25.41,
+    "longitude": -49.25,
+    "stellarWallet": ""
+  },
+  {
+    "id": "21",
+    "name": "Restaurante Popular Portão",
+    "address": "Rua da Cidadania Portão - Portão, Curitiba - PR",
+    "latitude": -25.48,
+    "longitude": -49.33,
+    "stellarWallet": ""
+  },
+  {
+    "id": "22",
+    "name": "Cozinha Comunitária Fazendinha",
+    "address": "Rua da Cidadania Fazendinha - Fazendinha, Curitiba - PR",
+    "latitude": -25.49,
+    "longitude": -49.34,
+    "stellarWallet": ""
+  }
+]
+
