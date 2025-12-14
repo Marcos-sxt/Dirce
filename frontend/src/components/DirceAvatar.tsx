@@ -34,7 +34,12 @@ export function DirceAvatar({ size = "md", speaking = false, className }: DirceA
           onError={(e) => {
             // Fallback se a imagem não carregar
             const target = e.target as HTMLImageElement;
-            target.src = "/Dircê.png";
+            if (target.src.includes('.jpeg')) {
+              target.src = "/Dircê.png";
+            } else {
+              // Se ambos falharem, usar placeholder ou gradiente
+              target.style.display = 'none';
+            }
           }}
         />
       </div>
