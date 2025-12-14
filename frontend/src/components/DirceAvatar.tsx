@@ -28,9 +28,14 @@ export function DirceAvatar({ size = "md", speaking = false, className }: DirceA
         )}
       >
         <img
-          src="/Dircê.png"
+          src="/Dircê.jpeg"
           alt="Dirce"
           className="w-full h-full object-cover rounded-full"
+          onError={(e) => {
+            // Fallback se a imagem não carregar
+            const target = e.target as HTMLImageElement;
+            target.src = "/Dircê.png";
+          }}
         />
       </div>
     </div>
