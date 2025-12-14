@@ -38,7 +38,7 @@ O `render.yaml` está correto, mas o Render pode ter problemas ao ler o Blueprin
 - **Root Directory:** `backend` ⚠️ **CRÍTICO**
 
 **Build & Start:**
-- **Build Command:** `npm run build`
+- **Build Command:** `npm run build:render` (instala dependências + build)
 - **Start Command:** `npm run start:prod`
 
 ### Passo 3: Variáveis de Ambiente
