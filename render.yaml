@@ -10,14 +10,8 @@ services:
         value: production
       - key: PORT
         value: 10000
-      - key: DATABASE_URL
-        sync: false
       - key: ELEVENLABS_API_KEY
         sync: false
-      - key: STELLAR_SECRET_KEY
-        sync: false
-      - key: STELLAR_NETWORK
-        value: testnet
       - key: FRONTEND_URL
         sync: false
 
