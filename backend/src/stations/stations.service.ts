@@ -24,9 +24,11 @@ export class StationsService {
     try {
       // Tentar diferentes caminhos (desenvolvimento e produção)
       const possiblePaths = [
-        path.join(__dirname, '../data/stations.json'), // Build
+        path.join(__dirname, '../../data/stations.json'), // Build (dist/data/)
+        path.join(__dirname, '../data/stations.json'), // Build alternativo
         path.join(__dirname, '../../src/data/stations.json'), // Desenvolvimento
-        path.join(process.cwd(), 'src/data/stations.json'), // Fallback
+        path.join(process.cwd(), 'src/data/stations.json'), // Fallback desenvolvimento
+        path.join(process.cwd(), 'data/stations.json'), // Fallback build
       ];
 
       let stationsData: string | null = null;
