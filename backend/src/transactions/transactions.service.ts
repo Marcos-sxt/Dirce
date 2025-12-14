@@ -134,13 +134,19 @@ export class TransactionsService {
    * Lista transações de um usuário (mock - em memória)
    */
   async getUserTransactions(userWallet: string) {
-    return this.transactions
+    const filtered = this.transactions
       .filter(tx => tx.userWallet === userWallet)
-      .sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime())
-      .map(tx => ({
+      .sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime());
+    
+    // Buscar estações para cada transação
+    const transactionsWithStations = await Promise.all(
+      filtered.map(async (tx) => ({
         ...tx,
-        station: this.stationsService.findById(tx.stationId),
-      }));
+        station: await this.stationsService.findById(tx.stationId),
+      }))
+    );
+    
+    return transactionsWithStations;
   }
 
   /**
