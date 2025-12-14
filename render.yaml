@@ -1,4 +1,4 @@
-oooservices:
+services:
   - type: web
     name: dirce-backend
     env: node
