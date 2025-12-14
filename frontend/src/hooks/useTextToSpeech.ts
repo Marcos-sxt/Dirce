@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useRef, useEffect } from 'react';
 
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3001';
 
@@ -11,9 +11,40 @@ export function useTextToSpeech({ onComplete, onError }: UseTextToSpeechOptions 
   const [isPlaying, setIsPlaying] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const audioRef = useState<HTMLAudioElement | null>(null)[0];
+  const audioRef = useRef<HTMLAudioElement | null>(null);
+  const audioUrlRef = useRef<string | null>(null); // Para limpar URLs de blob
+
+  // Cleanup: parar áudio quando componente desmonta
+  useEffect(() => {
+    return () => {
+      if (audioRef.current) {
+        audioRef.current.pause();
+        audioRef.current.currentTime = 0;
+        audioRef.current = null;
+      }
+      // Limpar URL do blob se existir
+      if (audioUrlRef.current) {
+        URL.revokeObjectURL(audioUrlRef.current);
+        audioUrlRef.current = null;
+      }
+      setIsPlaying(false);
+      setIsLoading(false);
+    };
+  }, []);
 
   const speak = async (text: string, flash: boolean = false) => {
+    // Parar áudio anterior se estiver tocando
+    if (audioRef.current) {
+      audioRef.current.pause();
+      audioRef.current.currentTime = 0;
+      audioRef.current = null;
+    }
+    // Limpar URL anterior se existir
+    if (audioUrlRef.current) {
+      URL.revokeObjectURL(audioUrlRef.current);
+      audioUrlRef.current = null;
+    }
+
     setIsLoading(true);
     setError(null);
 
@@ -34,9 +65,11 @@ export function useTextToSpeech({ onComplete, onError }: UseTextToSpeechOptions 
       // Converter resposta para blob
       const audioBlob = await response.blob();
       const audioUrl = URL.createObjectURL(audioBlob);
+      audioUrlRef.current = audioUrl; // Guardar para cleanup
 
       // Criar elemento de áudio
       const audio = new Audio(audioUrl);
+      audioRef.current = audio;
       
       audio.onplay = () => {
         setIsPlaying(true);
@@ -46,6 +79,8 @@ export function useTextToSpeech({ onComplete, onError }: UseTextToSpeechOptions 
       audio.onended = () => {
         setIsPlaying(false);
         URL.revokeObjectURL(audioUrl); // Limpar memória
+        audioUrlRef.current = null;
+        audioRef.current = null;
         if (onComplete) {
           onComplete();
         }
@@ -56,10 +91,12 @@ export function useTextToSpeech({ onComplete, onError }: UseTextToSpeechOptions 
         setIsLoading(false);
         const errorMsg = 'Erro ao reproduzir áudio';
         setError(errorMsg);
+        URL.revokeObjectURL(audioUrl);
+        audioUrlRef.current = null;
+        audioRef.current = null;
         if (onError) {
           onError(errorMsg);
         }
-        URL.revokeObjectURL(audioUrl);
       };
 
       // Reproduzir
@@ -70,6 +107,11 @@ export function useTextToSpeech({ onComplete, onError }: UseTextToSpeechOptions 
       setIsLoading(false);
       const errorMsg = err.message || 'Erro ao gerar áudio';
       setError(errorMsg);
+      audioRef.current = null;
+      if (audioUrlRef.current) {
+        URL.revokeObjectURL(audioUrlRef.current);
+        audioUrlRef.current = null;
+      }
       if (onError) {
         onError(errorMsg);
       }
@@ -78,10 +120,16 @@ export function useTextToSpeech({ onComplete, onError }: UseTextToSpeechOptions 
   };
 
   const stop = () => {
-    if (audioRef) {
-      audioRef.pause();
-      audioRef.currentTime = 0;
+    if (audioRef.current) {
+      audioRef.current.pause();
+      audioRef.current.currentTime = 0;
       setIsPlaying(false);
+      audioRef.current = null;
+    }
+    // Limpar URL do blob
+    if (audioUrlRef.current) {
+      URL.revokeObjectURL(audioUrlRef.current);
+      audioUrlRef.current = null;
     }
   };
 

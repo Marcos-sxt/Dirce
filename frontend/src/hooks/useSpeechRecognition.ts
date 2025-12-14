@@ -64,10 +64,14 @@ export function useSpeechRecognition({
       const transcriptText = finalTranscript.trim() || interimTranscript;
       setTranscript(transcriptText);
 
-      // Se houver resultado final, parar reconhecimento e chamar callback
+      // Se houver resultado final, parar reconhecimento IMEDIATAMENTE
       if (finalTranscript.trim()) {
-        // Parar o reconhecimento imediatamente
-        recognition.stop();
+        // Parar o reconhecimento imediatamente (sem esperar mais)
+        try {
+          recognition.stop();
+        } catch (e) {
+          // Ignorar erro se já estiver parado
+        }
         setIsListening(false);
         if (onResult) {
           onResult(finalTranscript.trim());

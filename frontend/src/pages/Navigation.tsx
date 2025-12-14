@@ -1,9 +1,10 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import { useNavigate, useSearchParams, useLocation } from "react-router-dom";
 import { MapPin, X, Volume2, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { DirceAvatar } from "@/components/DirceAvatar";
 import { getStationById, type Station } from "@/lib/api";
+import { useAutoSpeak } from "@/hooks/useAutoSpeak";
 
 const Navigation = () => {
   const navigate = useNavigate();
@@ -15,6 +16,26 @@ const Navigation = () => {
   
   // Pegar localização do usuário (se vier do Stations)
   const userLocation = location.state?.userLocation;
+  
+  // Gerar texto para TTS com instruções de navegação
+  const navigationText = useMemo(() => {
+    if (isLoading) {
+      return "Carregando rota...";
+    }
+    
+    if (!station) {
+      return "";
+    }
+    
+    return `Navegando para ${station.name}. Quando chegar, toque em Cheguei.`;
+  }, [station, isLoading]);
+  
+  // Falar instruções de navegação automaticamente
+  useAutoSpeak({
+    text: navigationText,
+    enabled: !isLoading && !!station,
+    delay: 1000,
+  });
 
   useEffect(() => {
     const loadStation = async () => {

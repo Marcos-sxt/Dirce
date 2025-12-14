@@ -33,9 +33,23 @@ const Listening = () => {
     if (isSupported) {
       start();
       
-      // Timeout de segurança: parar após 10 segundos se não tiver resultado
+      // Timeout de silêncio: parar após 4 segundos sem resultado final
+      // Isso força o reconhecimento a parar mesmo que não detecte fim natural
+      const silenceTimer = setTimeout(() => {
+        if (isListening) {
+          stop();
+          // Se tiver algum transcript (mesmo que interim), usar
+          if (transcript.trim()) {
+            setTimeout(() => {
+              navigate("/confirm", { state: { transcript } });
+            }, 500);
+          }
+        }
+      }, 4000); // 4 segundos - tempo suficiente para falar localização
+      
+      // Timeout de segurança: parar após 6 segundos máximo
       const safetyTimer = setTimeout(() => {
-        if (isListening && !transcript.trim()) {
+        if (isListening) {
           stop();
           // Se tiver algum transcript, usar; senão mostrar erro
           if (transcript.trim()) {
@@ -44,9 +58,10 @@ const Listening = () => {
             setTranscript('Não foi possível entender. Tente novamente.');
           }
         }
-      }, 10000); // 10 segundos
+      }, 6000); // 6 segundos máximo
       
       return () => {
+        clearTimeout(silenceTimer);
         clearTimeout(safetyTimer);
         stop();
       };

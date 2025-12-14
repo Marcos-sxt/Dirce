@@ -1,10 +1,11 @@
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { CreditCard, Smartphone, Check, Home } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { DirceAvatar } from "@/components/DirceAvatar";
 import { mockStations } from "@/data/mockStations";
 import { cn } from "@/lib/utils";
+import { useAutoSpeak } from "@/hooks/useAutoSpeak";
 
 const Payment = () => {
   const navigate = useNavigate();
@@ -14,9 +15,26 @@ const Payment = () => {
   const [isProcessing, setIsProcessing] = useState(false);
 
   const station = mockStations.find((s) => s.id === stationId) || mockStations[0];
-
+  
   const mockBalance = 100;
   const mockHash = "0x7f9e...8b3a";
+  
+  // Gerar texto para TTS baseado no estado
+  const paymentText = useMemo(() => {
+    if (isPaid) {
+      return `Pagamento confirmado! Aproveite sua refeição.`;
+    }
+    
+    return `Você chegou em ${station.name}! Seu saldo: ${mockBalance} refeições. Aproxime seu cartão para pagar.`;
+  }, [isPaid, station.name, mockBalance]);
+  
+  // Falar instruções de pagamento automaticamente
+  // Quando isPaid muda, o texto muda e será falado novamente
+  useAutoSpeak({
+    text: paymentText,
+    enabled: true,
+    delay: isPaid ? 1200 : 800, // Delay maior após pagamento confirmado
+  });
 
   const handlePayment = async () => {
     setIsProcessing(true);

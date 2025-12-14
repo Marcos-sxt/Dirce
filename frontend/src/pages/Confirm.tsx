@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { DirceAvatar } from "@/components/DirceAvatar";
 import { mockLocation } from "@/data/mockStations";
 import { geocodeAddress } from "@/lib/api";
+import { useAutoSpeak } from "@/hooks/useAutoSpeak";
 
 const Confirm = () => {
   const navigate = useNavigate();
@@ -14,6 +15,13 @@ const Confirm = () => {
   // Pegar transcript do estado de navegação (se vier do Listening)
   const transcriptFromState = location.state?.transcript;
   const locationText = transcriptFromState || `${mockLocation.address}, ${mockLocation.neighborhood}, ${mockLocation.city}`;
+  
+  // Falar confirmação automaticamente
+  useAutoSpeak({
+    text: `Entendi! É esse o local? ${locationText}. Toque em Correto ou Errado.`,
+    enabled: true,
+    delay: 800,
+  });
 
   const handleConfirm = async () => {
     setIsGeocoding(true);

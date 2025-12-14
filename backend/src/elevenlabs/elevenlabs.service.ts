@@ -6,7 +6,7 @@ import axios from 'axios';
 export class ElevenlabsService {
   private readonly apiKey: string;
   private readonly baseUrl = 'https://api.elevenlabs.io/v1';
-  private readonly defaultVoiceId = 'pNInz6obpgDQGcFmaJgB'; // Adam - voz masculina em português (ajustar conforme necessário)
+  private readonly defaultVoiceId = 'vXiJkFosZDxUjhiIwLol'; // Dirce - voz feminina brasileira, calorosa e empática
 
   constructor(private configService: ConfigService) {
     this.apiKey = this.configService.get<string>('ELEVENLABS_API_KEY') || '';

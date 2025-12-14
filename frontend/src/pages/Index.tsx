@@ -2,9 +2,17 @@ import { useNavigate } from "react-router-dom";
 import { Mic, MapPin } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { DirceAvatar } from "@/components/DirceAvatar";
+import { useAutoSpeak } from "@/hooks/useAutoSpeak";
 
 const Index = () => {
   const navigate = useNavigate();
+  
+  // Falar saudação automaticamente ao carregar a página
+  useAutoSpeak({
+    text: "Olá! Sou a Dirce. Toque no microfone para falar sua localização.",
+    enabled: true,
+    delay: 800, // Aguardar animações carregarem
+  });
 
   return (
     <div className="dirce-container">

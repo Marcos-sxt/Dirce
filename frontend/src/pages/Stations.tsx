@@ -1,16 +1,44 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { Mic, ArrowLeft, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { StationCard, type Station } from "@/components/StationCard";
 import { mockStations } from "@/data/mockStations";
 import { getNearbyStations, type Station as ApiStation } from "@/lib/api";
+import { useAutoSpeak } from "@/hooks/useAutoSpeak";
 
 const Stations = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const [stations, setStations] = useState<Station[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  
+  // Gerar texto para TTS com lista de estações
+  const stationsText = useMemo(() => {
+    if (isLoading) {
+      return "Buscando estações...";
+    }
+    
+    if (stations.length === 0) {
+      return "Nenhuma estação encontrada. Tente outra localização.";
+    }
+    
+    // Pegar apenas a estação mais próxima
+    const closestStation = stations[0];
+    const distanceText = closestStation.distance < 1000 
+      ? `${closestStation.distance} metros`
+      : `${(closestStation.distance / 1000).toFixed(1)} quilômetros`;
+    
+    // Texto simplificado: apenas número de estações, nome e distância da mais próxima
+    return `Encontrei ${stations.length} ${stations.length === 1 ? 'estação' : 'estações'}. A mais próxima é ${closestStation.name}, a ${distanceText}.`;
+  }, [stations, isLoading]);
+  
+  // Falar lista de estações automaticamente
+  useAutoSpeak({
+    text: stationsText,
+    enabled: !isLoading,
+    delay: 1000, // Aguardar carregamento completo
+  });
 
   // Pegar coordenadas do usuário (se vier do Confirm)
   const userLocation = location.state?.userLocation;
