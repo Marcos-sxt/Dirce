@@ -1,182 +1,149 @@
-# 🍽️ Dirce - Hackathon Devs de Impacto
+<div align="center">
 
-**Tema:** Insegurança Alimentar  
-**Evento:** Hackathon Devs de Impacto (36 horas)  
-**Objetivo:** Desenvolver solução de IA para conectar pessoas em situação de vulnerabilidade a estações de alimentação
+# Dirce
 
----
+</div>
 
-## 📋 Sobre o Projeto
+<p align="center">
+  <img src="readme/img/dirce_logo.png" alt="Dirce" width="400" style="margin-bottom: 20px;">
+</p>
 
-**Dirce** é um app web (mobile-oriented) que guia pessoas até estações de alimentação usando interface por voz, tokens rastreáveis onchain e integração com Google Maps.
-
-### Conceito
-- Interface acessível por áudio para pessoas com baixa alfabetização ou deficiência visual
-- Sistema de tokens onchain para rastreabilidade e combate a fraudes
-- Cartão físico distribuído pelo CRAS com saldo onchain
-- Navegação inteligente até estações de alimentação mais próximas
+<p align="center">
+  <i>Economia circular para garantir alimento de qualidade, acessível, rastreável e com dignidade — do campo à mesa.</i>
+</p>
 
 ---
 
-## 📁 Estrutura do Projeto
+## Membros da Equipe
 
-```
-devs_de_impacto/
-├── README.md                          # Este arquivo
-├── projeto.txt                        # Ideia inicial
-├── readme/
-│   └── img/
-│       └── dirce_logo.png            # Logo para documentação (README, apresentações)
-├── frontend/
-│   ├── public/                       # Assets públicos do frontend (Vite)
-│   │   ├── Dircê.png                 # Logo da aplicação (usado no app)
-│   │   ├── favicon.ico
-│   │   └── ...
-│   └── src/                          # Código fonte do frontend
-├── backend/                          # API NestJS
-├── docs/
-│   ├── research/
-│   │   └── 2025-01-27_hackathon-devs-de-impacto.md
-│   └── notes/
-│       └── 2025-01-27_analise-ideia-dirce.md
-└── ...
-```
-
-### 📸 Assets e Imagens
-
-- **`readme/img/`** - Imagens para documentação (README, apresentações, documentação externa)
-  - `dirce_logo.png` - Logo para uso em documentação
-  
-- **`frontend/public/`** - Assets públicos do frontend (servidos diretamente pelo Vite)
-  - `Dircê.png` - Logo da aplicação (usado no componente `DirceAvatar`)
-  - `favicon.ico` - Favicon do app
-  - Outros assets estáticos (manifest.json, robots.txt, etc.)
-
-**Nota:** O frontend usa `frontend/public/` (padrão Vite), não um diretório `static`. Assets em `public/` são acessíveis via `/nome-do-arquivo.ext` no app.
+<div align="center">
+  <table>
+    <tr>
+      <td align="center">
+        <a href="https://www.linkedin.com/in/yt-yukitanaka/">
+          <img src="https://github.com/yukitnak.png" style="border-radius: 10%; width: 150px;" alt="Yuki Tanaka"/><br>
+          <sub><b>Yuki Tanaka</b></sub>
+        </a>
+      </td>
+      <td align="center">
+        <a href="https://www.linkedin.com/in/marcos-morais79/">
+          <img src="https://github.com/Marcos-sxt.png" style="border-radius: 10%; width: 150px;" alt="Marcos Morais"/><br>
+          <sub><b>Marcos Morais</b></sub>
+        </a>
+      </td>
+      <td align="center">
+        <a href="https://www.linkedin.com/in/barbarapeslo">
+          <img src="https://github.com/abarbarapeslo.png" style="border-radius: 10%; width: 150px;" alt="Barbara Lopes"/><br>
+          <sub><b>Bárbara Lopes</b></sub>
+        </a>
+      </td>
+        <td align="center">
+            <a href="https://www.linkedin.com/in/flaviagonmac/">
+            <img src="https://github.com/flaviagoma.png" style="border-radius: 10%; width: 150px;" alt="Flávia Macêdo"/><br>
+          <sub><b>Flávia Macêdo</b></sub>
+        </a>
+      </td>
+    </tr>
+  </table>
+</div>
 
 ---
 
-## 🎯 Jornada do Usuário
+## Descrição
 
-1. **Acesso:** Usuário abre o app e encontra a Dirce
-2. **Localização:** Fala sua localização por áudio
-3. **Busca:** Recebe estações mais próximas por áudio
-4. **Escolha:** Seleciona estação por áudio
-5. **Navegação:** Recebe link do Google Maps com destino marcado
-6. **Deslocamento:** Inicia jornada até o local
-7. **Uso:** Chegando no local, interage e usa o cartão para "pagar" por uma refeição
+**Dirce** é uma infraestrutura digital de impacto social criada para enfrentar um dos maiores desafios estruturais do país: a **segurança alimentar**, do campo à mesa, desenvolvida para o **Hackathon Devs de Impacto**.
 
----
+Nosso propósito é conectar **o campo à mesa** promovendo acesso, rastreabilidade e dignidade por meio da tecnologia.
+A Dirce tem o foco em:
 
-## 🚀 Status do Projeto
+- ampliar o acesso a alimentos saudáveis e de qualidade,  
+- fortalecer produtores locais e a economia circular,  
+- reduzir perdas e ineficiências na cadeia alimentar,  
+- garantir transparência e rastreabilidade da produção ao consumo,  
+- promover inclusão social por meio de tecnologias acessíveis.  
 
-- [x] Pesquisa sobre o hackathon
-- [x] Análise da ideia inicial
-- [x] Definição do MVP
-- [x] Escolha da stack tecnológica
-- [x] Setup inicial (Next.js + NestJS)
-- [ ] Desenvolvimento
-- [ ] Testes
-- [ ] Apresentação
+Inspirada na complexidade dos sistemas alimentares, a Dirce traduz dados, fluxos e relações em
+**decisões mais justas, eficientes e transparentes**, tornando visível o que hoje opera de forma *fragmentada*.
 
 ---
 
-## 📚 Documentação
+## Valores da Marca
 
-### Pesquisa
-- **[Hackathon Devs de Impacto](./docs/research/2025-01-27_hackathon-devs-de-impacto.md)** - Contexto do evento, características, projetos vencedores anteriores
+### **Dignidade Alimentar**
+Acesso à alimentação saudável como direito básico, respeitando as realidades sociais e territoriais.
 
-### Análise e Planejamento
-- **[Análise da Ideia Dirce](./docs/notes/2025-01-27_analise-ideia-dirce.md)** - Análise detalhada, pontos fortes, desafios, sugestões de melhoria
-- **[Decisões Técnicas](./docs/notes/2025-01-27_decisoes-tecnicas.md)** - ✅ Todas as decisões confirmadas
-- **[Arquitetura Técnica](./docs/notes/2025-01-27_arquitetura-tecnica.md)** - Arquitetura completa, fluxos, estrutura de dados
-- **[Plano de Implementação](./docs/notes/2025-01-27_plano-implementacao.md)** - Cronograma detalhado para 36h
+### **Inclusão e Acessibilidade**
+Tecnologia pensada para todos, com uso de cartão físico e atendimento por áudio via IA.
 
-### Setup
-- **[Guia de Setup](./docs/SETUP.md)** - Instruções completas para configurar o ambiente
+### **Economia Circular**
+Fortalecimento da economia local, mantendo recursos dentro do território e apoiando pequenos produtores.
 
----
-
-## 🛠️ Stack Tecnológica
-
-### ✅ Stack Completa Definida
-- **Frontend:** [Next.js](https://nextjs.org/) (App Router, TypeScript)
-- **Backend:** [NestJS](https://docs.nestjs.com/) (TypeScript)
-- **Banco de Dados:** PostgreSQL (Prisma/TypeORM)
-- **Blockchain:** [Stellar](https://developers.stellar.org/docs) (testnet, token customizado "REFEICAO")
-- **Áudio:** [Eleven Labs](https://elevenlabs.io/developers) (STT + TTS)
-- **Mapas:** Google Maps API
-
-### Características
-- **Acesso:** Público (sem login)
-- **Cartão:** Mockado (tipo Kast, apenas storytelling)
-- **Pagamento:** NFC mockado (aproximação)
-- **Dados:** Mockados/inflados para MVP
+### **Rastreabilidade e Transparência**
+Uso de blockchain para garantir rastreabilidade, confiança e controle social.
 
 ---
 
-## 💡 Próximos Passos
+## Problema
 
-1. ✅ Todas as decisões técnicas confirmadas
-2. ✅ **Setup inicial completo:**
-   - ✅ Projetos Next.js e NestJS criados
-   - ✅ Schema Prisma configurado
-   - ✅ PostgreSQL configurado para localhost (arquivo .env criado)
-   - ✅ Script de setup do banco criado (`backend/setup-db.sh`)
-   - ⏳ Criar banco de dados (executar `./setup-db.sh`)
-   - ⏳ Obter chaves de API (Google Maps, Eleven Labs)
-3. **Desenvolvimento:**
-   - Ver [Plano de Implementação](./docs/notes/2025-01-27_plano-implementacao.md)
-   - Ver [Guia de Setup](./docs/SETUP.md) para configurar ambiente
-4. **Preparar dados mock:**
-   - Estações de exemplo
-   - Wallets Stellar de teste
-5. **Estruturar pitch de apresentação**
+Fragilidade sistêmica na logística, na rastreabilidade e na acessibilidade comprometem a garantia da segurança alimentar. 
+
+O desafio do Hackathon:
+
+> **"Como criar soluções tecnológicas inovadoras (Junto com a IA) para fortalecer a segurança alimentar? do campo à mesa"**
 
 ---
 
-## 🚀 Quick Start
+## O que a Dirce resolve
 
-```bash
-# 1. Configurar Banco de Dados (PostgreSQL local)
-cd backend
-./setup-db.sh  # Cria o banco 'dirce' se não existir
-# Ou manualmente: createdb -U postgres dirce
-
-# 2. Frontend
-cd frontend
-npm install
-npm run dev  # http://localhost:3000
-
-# 3. Backend
-cd backend
-npm install
-# .env já está configurado para localhost
-npx prisma migrate dev  # Criar tabelas
-npm run start:dev  # http://localhost:3001
-```
-
-**Nota:** O arquivo `.env` do backend já está configurado para PostgreSQL localhost (`postgresql://postgres:postgres@localhost:5432/dirce`). Ajuste usuário/senha se necessário.
-
-Ver [Guia de Setup completo](./docs/SETUP.md) para mais detalhes.
-
+- 🥗 **Garante acesso a alimentos de qualidade** para usuários do CadÚnico  
+- 💳 **Utiliza cartão físico**, simples e aceito em maquininhas  
+- 🔄 **Estimula a economia circular local**  
+- 🌱 **Fortalece a agricultura familiar e produtores locais**  
+- 🧠 **Oferece suporte por IA via áudio**, promovendo acessibilidade  
+- 🔐 **Registra transações em blockchain**, assegurando transparência  
+- 📍 **Conecta CRAS, usuários, produtores e parceiros** em um único ecossistema  
 ---
 
-## 📖 Referências
+## Fluxo de Funcionamento da Solução
 
-- [Hackathon Devs de Impacto - Correio Braziliense](https://www.correiobraziliense.com.br/brasil/2025/10/7282645-curitiba-recebe-evento-que-promove-inteligencia-artificial-como-servico-social.html)
-- [Projeto Clima Seguro (Vencedor 2025)](https://iabrasilnoticias.com.br/estudantes-de-sao-paulo-vencem-hackathon-com-plataforma-de-ia-que-calcula-custo-de-desastres-climaticos/)
-- [ODS 2 - Fome Zero](https://brasil.un.org/pt-br/sdgs/2)
+1. **Identificação do Beneficiário**  
+   • Validação automática a partir do Cadastro Único.
+
+2. **Entrega do Cartão Dirce no CRAS**  
+   • Cartão físico habilitado para uso em estabelecimentos parceiros. 
+
+3. **Crédito da Moeda Social**  
+   • O usuário recebe 200 créditos (1 moeda social =  1R$) mensalmente em Dirce.
+
+4. **Compra de Alimentos**  
+   • Uso do cartão Dirce em maquininhas de produtores e comércios cadastrados.
+   • Estimativa de impacto energético.
+
+5. **Incentivo Fiscal aos Produtores e Comércios**  
+   • Produtores e estabelecimentos cadastrados passam a ter acesso a **benefícios fiscais**, 
+   como abatimento de impostos, mediante participação no ecossistema Dirce e cumprimento 
+   dos critérios do programa.
+
+
+## Tecnologias
+
+- React 18 com Vite e TypeScript
+- Tailwind CSS e shadcn-ui para interface
+- React Router v6 para navegação
+- Web Speech API para reconhecimento de voz
+- NestJS com TypeScript no backend
+- Prisma ORM com PostgreSQL
+- Integração com APIs externas (Google Maps e Eleven Labs)
+- Blockchain Stellar (Testnet) com token customizado REFEICAO
+- Uso do @stellar/stellar-sdk para emissão e transações de ativos
+- IA/ML elevenlabs
 
 ---
+## 🥕 Uma nova visão para o sistema alimentar
 
-## 👥 Equipe
+A Dirce não é apenas uma moeda.  
+É uma ponte entre quem produz e quem precisa, usando tecnologia para garantir comida de verdade que seja rastrável, promova inclusão social, impacto educacional e local.
 
-_[A ser preenchido]_
+> **Dirce é seu caminho para alimentação saudável.**
 
----
-
-## 📝 Licença
-
-_[A definir]_
-
+Redeploy forced at 2025-11-30T21:54:46.4148695-03:00
