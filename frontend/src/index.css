@@ -1,0 +1,219 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 0 0% 98%;
+    --foreground: 150 20% 15%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 150 20% 15%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 150 20% 15%;
+
+    --primary: 95 48% 58%; /* Verde #90c862 */
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 20 84% 61%; /* Laranja #ef8447 */
+    --secondary-foreground: 0 0% 100%;
+
+    --muted: 135 15% 92%;
+    --muted-foreground: 135 23% 43%;
+
+    --accent: 95 40% 92%;
+    --accent-foreground: 95 48% 40%;
+
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 135 15% 88%;
+    --input: 135 15% 88%;
+    --ring: 95 48% 58%;
+
+    --radius: 1rem;
+
+    /* Custom Dirce tokens - Paleta de Identidade Visual */
+    --dirce-green: 95 48% 58%; /* Verde #90c862 */
+    --dirce-green-light: 95 40% 92%;
+    --dirce-green-dark: 135 23% 43%; /* Verde Apagado #55885f */
+    --dirce-orange: 20 84% 61%; /* Laranja #ef8447 */
+    --dirce-orange-light: 20 80% 95%;
+    --dirce-orange-dark: 20 84% 50%;
+    
+    /* Gradients */
+    --gradient-primary: linear-gradient(135deg, #90c862, #55885f);
+    --gradient-secondary: linear-gradient(135deg, #ef8447, #d66a2e);
+    --gradient-background: linear-gradient(180deg, hsl(0, 0%, 100%), hsl(135, 20%, 97%));
+    
+    /* Shadows */
+    --shadow-soft: 0 4px 20px -4px hsl(95 48% 58% / 0.2);
+    --shadow-button: 0 8px 30px -8px hsl(95 48% 58% / 0.4);
+    --shadow-card: 0 4px 24px -8px hsl(0 0% 0% / 0.1);
+
+    --sidebar-background: 0 0% 98%;
+    --sidebar-foreground: 240 5.3% 26.1%;
+    --sidebar-primary: 240 5.9% 10%;
+    --sidebar-primary-foreground: 0 0% 98%;
+    --sidebar-accent: 240 4.8% 95.9%;
+    --sidebar-accent-foreground: 240 5.9% 10%;
+    --sidebar-border: 220 13% 91%;
+    --sidebar-ring: 217.2 91.2% 59.8%;
+  }
+
+  .dark {
+    --background: 150 15% 8%;
+    --foreground: 150 10% 95%;
+
+    --card: 150 15% 12%;
+    --card-foreground: 150 10% 95%;
+
+    --popover: 150 15% 12%;
+    --popover-foreground: 150 10% 95%;
+
+    --primary: 95 48% 58%; /* Verde #90c862 */
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 20 84% 61%; /* Laranja #ef8447 */
+    --secondary-foreground: 0 0% 100%;
+
+    --muted: 135 15% 18%;
+    --muted-foreground: 135 10% 60%;
+
+    --accent: 95 40% 20%;
+    --accent-foreground: 95 45% 85%;
+
+    --destructive: 0 70% 50%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 135 15% 20%;
+    --input: 135 15% 20%;
+    --ring: 95 48% 58%;
+
+    --dirce-green: 95 48% 58%; /* Verde #90c862 */
+    --dirce-green-light: 95 30% 20%;
+    --dirce-green-dark: 135 23% 43%; /* Verde Apagado #55885f */
+    --dirce-orange: 20 84% 61%; /* Laranja #ef8447 */
+    --dirce-orange-light: 20 40% 20%;
+    --dirce-orange-dark: 20 84% 50%;
+
+    --sidebar-background: 240 5.9% 10%;
+    --sidebar-foreground: 240 4.8% 95.9%;
+    --sidebar-primary: 224.3 76.3% 48%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 240 3.7% 15.9%;
+    --sidebar-accent-foreground: 240 4.8% 95.9%;
+    --sidebar-border: 240 3.7% 15.9%;
+    --sidebar-ring: 217.2 91.2% 59.8%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground antialiased;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  }
+
+  html {
+    font-size: 18px;
+  }
+}
+
+@layer components {
+  .dirce-container {
+    @apply min-h-screen flex flex-col items-center justify-center p-6;
+    background: var(--gradient-background);
+  }
+
+  .dirce-card {
+    @apply bg-card rounded-2xl p-6;
+    box-shadow: var(--shadow-card);
+  }
+
+  .dirce-title {
+    @apply text-2xl font-bold text-foreground text-center;
+  }
+
+  .dirce-subtitle {
+    @apply text-lg text-muted-foreground text-center;
+  }
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  /* Audio wave animation */
+  @keyframes wave {
+    0%, 100% {
+      transform: scaleY(0.5);
+    }
+    50% {
+      transform: scaleY(1);
+    }
+  }
+
+  .animate-wave {
+    animation: wave 1s ease-in-out infinite;
+  }
+
+  .animate-wave-delay-1 {
+    animation: wave 1s ease-in-out infinite 0.1s;
+  }
+
+  .animate-wave-delay-2 {
+    animation: wave 1s ease-in-out infinite 0.2s;
+  }
+
+  .animate-wave-delay-3 {
+    animation: wave 1s ease-in-out infinite 0.3s;
+  }
+
+  .animate-wave-delay-4 {
+    animation: wave 1s ease-in-out infinite 0.4s;
+  }
+
+  /* Pulse ring animation */
+  @keyframes pulse-ring {
+    0% {
+      transform: scale(1);
+      opacity: 0.8;
+    }
+    100% {
+      transform: scale(1.5);
+      opacity: 0;
+    }
+  }
+
+  .animate-pulse-ring {
+    animation: pulse-ring 1.5s ease-out infinite;
+  }
+
+  /* Fade in up */
+  @keyframes fade-in-up {
+    0% {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .animate-fade-in-up {
+    animation: fade-in-up 0.5s ease-out forwards;
+  }
+
+  /* Stagger delay utilities */
+  .delay-100 { animation-delay: 100ms; }
+  .delay-200 { animation-delay: 200ms; }
+  .delay-300 { animation-delay: 300ms; }
+  .delay-400 { animation-delay: 400ms; }
+}

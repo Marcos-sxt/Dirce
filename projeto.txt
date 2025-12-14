@@ -1,0 +1,29 @@
+Dirce
+
+App web, mobile oriented
+
+o objetivo do app e guiar uma pessoa ate uma estacao de alimentacao
+
+as pessoas tem acesso a uma certa quantidade de Tokens mensais rodando onchain para rastreabilidade e antifraude
+
+a pessoa recebe um cartao pelo CRAS que contem o saldo onchain e pode ser usado nas estacoes.
+
+
+
+
+
+jornada do user
+
+page com a Dirce 
+
+fala sua loc por audio
+
+recebe estacoes mais perto por audio
+
+escolhe estacao por audio
+
+recebe ggmaps e abre o ggmaps com o destino marcado
+
+inicia a jornada ate o local
+
+chegando no local interage e usa o cartao pra "pagar" por uma refeicao

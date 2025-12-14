@@ -1,0 +1,17 @@
+{
+  "name": "Dirce - Assistente de Alimentação",
+  "short_name": "Dirce",
+  "description": "Encontre estações de alimentação próximas com ajuda da Dirce",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#fafafa",
+  "theme_color": "#22c55e",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "/favicon.ico",
+      "sizes": "64x64",
+      "type": "image/x-icon"
+    }
+  ]
+}
