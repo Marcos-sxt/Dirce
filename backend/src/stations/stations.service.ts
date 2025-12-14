@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import * as fs from 'fs';
 import * as path from 'path';
 
-interface Station {
+export interface Station {
   id: string;
   name: string;
   address: string;
