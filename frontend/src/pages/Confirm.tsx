@@ -18,7 +18,7 @@ const Confirm = () => {
   
   // Falar confirmação automaticamente
   useAutoSpeak({
-    text: `Entendi! É esse o local? ${locationText}. Toque em Correto ou Errado.`,
+    text: `Entendi! É esse o local? ${locationText}. Toque no botão verde Correto ou no botão cinza Errado.`,
     enabled: true,
     delay: 800,
   });

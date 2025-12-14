@@ -27,7 +27,7 @@ const Navigation = () => {
       return "";
     }
     
-    return `Navegando para ${station.name}. Quando chegar, toque em Cheguei.`;
+    return `Navegando para ${station.name}. Quando chegar, toque no botão laranja Cheguei.`;
   }, [station, isLoading]);
   
   // Falar instruções de navegação automaticamente

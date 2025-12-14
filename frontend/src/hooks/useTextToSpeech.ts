@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from 'react';
 
-const USE_MOCKS = true; // Sempre usar Web Speech API (nativo do navegador)
+const USE_MOCKS = false; // Usar Eleven Labs API (voz customizada Dirce)
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3001';
 
 interface UseTextToSpeechOptions {

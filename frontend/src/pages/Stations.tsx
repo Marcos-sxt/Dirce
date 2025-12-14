@@ -30,7 +30,7 @@ const Stations = () => {
       : `${(closestStation.distance / 1000).toFixed(1)} quilômetros`;
     
     // Texto simplificado: apenas número de estações, nome e distância da mais próxima
-    return `Encontrei ${stations.length} ${stations.length === 1 ? 'estação' : 'estações'}. A mais próxima é ${closestStation.name}, a ${distanceText}.`;
+    return `Encontrei ${stations.length} ${stations.length === 1 ? 'estação' : 'estações'}. A mais próxima é ${closestStation.name}, a ${distanceText}. Toque no botão laranja Ver no mapa para navegar.`;
   }, [stations, isLoading]);
   
   // Falar lista de estações automaticamente

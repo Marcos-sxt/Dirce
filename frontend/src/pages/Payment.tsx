@@ -22,10 +22,10 @@ const Payment = () => {
   // Gerar texto para TTS baseado no estado
   const paymentText = useMemo(() => {
     if (isPaid) {
-      return `Pagamento confirmado! Aproveite sua refeição.`;
+      return `Pagamento confirmado! Aproveite sua refeição. Toque no botão verde para voltar ao início.`;
     }
     
-    return `Você chegou em ${station.name}! Seu saldo: ${mockBalance} refeições. Aproxime seu cartão para pagar.`;
+    return `Você chegou em ${station.name}! Seu saldo: ${mockBalance} refeições. Aproxime seu cartão para pagar. Ou toque no botão laranja para pagar.`;
   }, [isPaid, station.name, mockBalance]);
   
   // Falar instruções de pagamento automaticamente
