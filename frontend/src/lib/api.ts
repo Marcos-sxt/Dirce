@@ -1,9 +1,18 @@
 /**
  * Cliente API para comunicação com backend
+ * MODO MOCK: Todas as chamadas são mockadas para funcionar offline
  */
 
+const USE_MOCKS = true; // Sempre usar mocks
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3001';
 const GOOGLE_MAPS_API_KEY = import.meta.env.VITE_GOOGLE_MAPS_API_KEY || '';
+
+import { 
+  mockGetNearbyStations, 
+  mockGetAllStations, 
+  mockGetStationById,
+  mockGeocodeAddress 
+} from './mocks';
 
 export interface GeocodeResult {
   lat: number;
@@ -33,6 +42,11 @@ export interface NearbyStationsParams {
  * Busca estações próximas
  */
 export async function getNearbyStations(params: NearbyStationsParams): Promise<Station[]> {
+  if (USE_MOCKS) {
+    console.log('🎭 Usando MOCK para estações próximas');
+    return mockGetNearbyStations(params.lat, params.lng, params.radius, params.limit);
+  }
+
   try {
     const { lat, lng, radius = 5000, limit = 10 } = params;
     const url = `${API_URL}/stations/nearby?lat=${lat}&lng=${lng}&radius=${radius}&limit=${limit}`;
@@ -51,9 +65,8 @@ export async function getNearbyStations(params: NearbyStationsParams): Promise<S
     console.log('📦 Dados recebidos do backend:', data);
     return data;
   } catch (error) {
-    console.error('❌ Erro ao buscar estações:', error);
-    // Retornar array vazio em caso de erro (frontend pode usar dados mockados)
-    return [];
+    console.error('❌ Erro ao buscar estações, usando mock:', error);
+    return mockGetNearbyStations(params.lat, params.lng, params.radius, params.limit);
   }
 }
 
@@ -61,6 +74,11 @@ export async function getNearbyStations(params: NearbyStationsParams): Promise<S
  * Busca todas as estações
  */
 export async function getAllStations(): Promise<Station[]> {
+  if (USE_MOCKS) {
+    console.log('🎭 Usando MOCK para todas as estações');
+    return mockGetAllStations();
+  }
+
   try {
     const response = await fetch(`${API_URL}/stations`);
 
@@ -70,8 +88,8 @@ export async function getAllStations(): Promise<Station[]> {
 
     return response.json();
   } catch (error) {
-    console.error('Erro ao buscar estações:', error);
-    return [];
+    console.error('Erro ao buscar estações, usando mock:', error);
+    return mockGetAllStations();
   }
 }
 
@@ -79,6 +97,11 @@ export async function getAllStations(): Promise<Station[]> {
  * Busca estação por ID
  */
 export async function getStationById(id: string): Promise<Station | null> {
+  if (USE_MOCKS) {
+    console.log('🎭 Usando MOCK para estação por ID:', id);
+    return mockGetStationById(id);
+  }
+
   try {
     console.log('🔍 Buscando estação por ID:', id);
     const response = await fetch(`${API_URL}/stations/${id}`);
@@ -91,8 +114,8 @@ export async function getStationById(id: string): Promise<Station | null> {
     console.log('📦 Estação encontrada:', data);
     return data;
   } catch (error) {
-    console.error('❌ Erro ao buscar estação:', error);
-    return null;
+    console.error('❌ Erro ao buscar estação, usando mock:', error);
+    return mockGetStationById(id);
   }
 }
 
@@ -147,17 +170,17 @@ export async function speechToText(audioBlob: Blob): Promise<string> {
 
 /**
  * Geocoding: Converte endereço em coordenadas (lat/lng)
- * Usa Google Maps Geocoding API
+ * MODO MOCK: Sempre retorna coordenadas mockadas
  */
 export async function geocodeAddress(address: string): Promise<GeocodeResult> {
+  if (USE_MOCKS) {
+    console.log('🎭 Usando MOCK para geocoding:', address);
+    return mockGeocodeAddress(address);
+  }
+
   if (!GOOGLE_MAPS_API_KEY) {
     console.warn('⚠️ Google Maps API Key não configurada. Usando coordenadas mockadas.');
-    // Fallback: coordenadas do Rio de Janeiro (centro)
-    return {
-      lat: -22.9068,
-      lng: -43.1729,
-      formattedAddress: address,
-    };
+    return mockGeocodeAddress(address);
   }
 
   try {
@@ -193,13 +216,8 @@ export async function geocodeAddress(address: string): Promise<GeocodeResult> {
       formattedAddress: result.formatted_address,
     };
   } catch (error) {
-    console.error('Erro ao geocodificar endereço:', error);
-    // Fallback: coordenadas do Rio de Janeiro (centro)
-    return {
-      lat: -22.9068,
-      lng: -43.1729,
-      formattedAddress: address,
-    };
+    console.error('Erro ao geocodificar endereço, usando mock:', error);
+    return mockGeocodeAddress(address);
   }
 }
 

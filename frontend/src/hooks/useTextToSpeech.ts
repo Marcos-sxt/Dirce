@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect } from 'react';
 
+const USE_MOCKS = true; // Sempre usar Web Speech API (nativo do navegador)
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3001';
 
 interface UseTextToSpeechOptions {
@@ -49,7 +50,58 @@ export function useTextToSpeech({ onComplete, onError }: UseTextToSpeechOptions 
     setError(null);
 
     try {
-      // Chamar backend API
+      if (USE_MOCKS) {
+        // Usar Web Speech API nativo do navegador (100% offline)
+        console.log('🎭 Usando Web Speech API para TTS:', text);
+        
+        if (!('speechSynthesis' in window)) {
+          throw new Error('Web Speech API não suportada neste navegador');
+        }
+
+        // Criar utterance
+        const utterance = new SpeechSynthesisUtterance(text);
+        
+        // Configurar voz (tentar português brasileiro)
+        const voices = speechSynthesis.getVoices();
+        const ptBRVoice = voices.find(v => 
+          v.lang.includes('pt-BR') || v.lang.includes('pt') || v.name.includes('Brazil')
+        );
+        if (ptBRVoice) {
+          utterance.voice = ptBRVoice;
+        }
+        utterance.lang = 'pt-BR';
+        utterance.rate = 0.9; // Velocidade ligeiramente mais lenta
+        utterance.pitch = 1.0;
+        utterance.volume = 1.0;
+
+        // Simular loading
+        setIsLoading(false);
+        setIsPlaying(true);
+
+        // Reproduzir
+        speechSynthesis.speak(utterance);
+
+        // Aguardar término
+        utterance.onend = () => {
+          setIsPlaying(false);
+          if (onComplete) {
+            onComplete();
+          }
+        };
+
+        utterance.onerror = (event) => {
+          setIsPlaying(false);
+          const errorMsg = 'Erro ao reproduzir áudio';
+          setError(errorMsg);
+          if (onError) {
+            onError(errorMsg);
+          }
+        };
+
+        return null; // Web Speech API não retorna Audio element
+      }
+
+      // Código original (backend API) - não usado em modo mock
       const response = await fetch(`${API_URL}/elevenlabs/text-to-speech`, {
         method: 'POST',
         headers: {
@@ -62,12 +114,10 @@ export function useTextToSpeech({ onComplete, onError }: UseTextToSpeechOptions 
         throw new Error('Erro ao gerar áudio');
       }
 
-      // Converter resposta para blob
       const audioBlob = await response.blob();
       const audioUrl = URL.createObjectURL(audioBlob);
-      audioUrlRef.current = audioUrl; // Guardar para cleanup
+      audioUrlRef.current = audioUrl;
 
-      // Criar elemento de áudio
       const audio = new Audio(audioUrl);
       audioRef.current = audio;
       
@@ -78,7 +128,7 @@ export function useTextToSpeech({ onComplete, onError }: UseTextToSpeechOptions 
 
       audio.onended = () => {
         setIsPlaying(false);
-        URL.revokeObjectURL(audioUrl); // Limpar memória
+        URL.revokeObjectURL(audioUrl);
         audioUrlRef.current = null;
         audioRef.current = null;
         if (onComplete) {
@@ -99,9 +149,7 @@ export function useTextToSpeech({ onComplete, onError }: UseTextToSpeechOptions 
         }
       };
 
-      // Reproduzir
       await audio.play();
-
       return audio;
     } catch (err: any) {
       setIsLoading(false);
@@ -120,16 +168,25 @@ export function useTextToSpeech({ onComplete, onError }: UseTextToSpeechOptions 
   };
 
   const stop = () => {
-    if (audioRef.current) {
-      audioRef.current.pause();
-      audioRef.current.currentTime = 0;
+    if (USE_MOCKS) {
+      // Parar Web Speech API
+      if ('speechSynthesis' in window) {
+        speechSynthesis.cancel();
+      }
       setIsPlaying(false);
-      audioRef.current = null;
-    }
-    // Limpar URL do blob
-    if (audioUrlRef.current) {
-      URL.revokeObjectURL(audioUrlRef.current);
-      audioUrlRef.current = null;
+    } else {
+      // Parar áudio tradicional
+      if (audioRef.current) {
+        audioRef.current.pause();
+        audioRef.current.currentTime = 0;
+        setIsPlaying(false);
+        audioRef.current = null;
+      }
+      // Limpar URL do blob
+      if (audioUrlRef.current) {
+        URL.revokeObjectURL(audioUrlRef.current);
+        audioUrlRef.current = null;
+      }
     }
   };
 
