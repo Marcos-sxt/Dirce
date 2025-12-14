@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect } from 'react';
 
-const USE_MOCKS = false; // Usar Eleven Labs API (voz customizada Dirce)
+// Tentar usar Eleven Labs primeiro, fallback para Web Speech API se falhar
+const PREFER_ELEVENLABS = true; // Tentar Eleven Labs primeiro
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3001';
 
 interface UseTextToSpeechOptions {
@@ -50,7 +51,75 @@ export function useTextToSpeech({ onComplete, onError }: UseTextToSpeechOptions 
     setError(null);
 
     try {
-      if (USE_MOCKS) {
+      // Tentar usar Eleven Labs primeiro (se preferido)
+      if (PREFER_ELEVENLABS) {
+        try {
+          // Tentar chamar backend API
+          const response = await fetch(`${API_URL}/elevenlabs/text-to-speech`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ text, flash }),
+          });
+
+          if (response.ok) {
+            // Sucesso! Usar áudio do Eleven Labs
+            const audioBlob = await response.blob();
+            const audioUrl = URL.createObjectURL(audioBlob);
+            audioUrlRef.current = audioUrl;
+
+            const audio = new Audio(audioUrl);
+            audioRef.current = audio;
+            
+            audio.onplay = () => {
+              setIsPlaying(true);
+              setIsLoading(false);
+            };
+
+            audio.onended = () => {
+              setIsPlaying(false);
+              URL.revokeObjectURL(audioUrl);
+              audioUrlRef.current = null;
+              audioRef.current = null;
+              if (onComplete) {
+                onComplete();
+              }
+            };
+
+            audio.onerror = () => {
+              setIsPlaying(false);
+              setIsLoading(false);
+              const errorMsg = 'Erro ao reproduzir áudio';
+              setError(errorMsg);
+              URL.revokeObjectURL(audioUrl);
+              audioUrlRef.current = null;
+              audioRef.current = null;
+              if (onError) {
+                onError(errorMsg);
+              }
+            };
+
+            await audio.play();
+            return audio;
+          } else {
+            // Backend falhou, usar fallback
+            console.warn('⚠️ Eleven Labs falhou, usando Web Speech API como fallback');
+            throw new Error('Eleven Labs unavailable');
+          }
+        } catch (elevenLabsError) {
+          // Se Eleven Labs falhar, usar Web Speech API
+          console.warn('⚠️ Fallback para Web Speech API:', elevenLabsError);
+          // Continuar para o código do Web Speech API abaixo
+        }
+      }
+
+      // Fallback: Usar Web Speech API nativo do navegador (100% offline)
+      if (!('speechSynthesis' in window)) {
+        throw new Error('Web Speech API não suportada neste navegador');
+      }
+
+      console.log('🎭 Usando Web Speech API para TTS:', text);
         // Usar Web Speech API nativo do navegador (100% offline)
         console.log('🎭 Usando Web Speech API para TTS:', text);
         
@@ -119,59 +188,7 @@ export function useTextToSpeech({ onComplete, onError }: UseTextToSpeechOptions 
           }
         };
 
-        return null; // Web Speech API não retorna Audio element
-      }
-
-      // Código original (backend API) - não usado em modo mock
-      const response = await fetch(`${API_URL}/elevenlabs/text-to-speech`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ text, flash }),
-      });
-
-      if (!response.ok) {
-        throw new Error('Erro ao gerar áudio');
-      }
-
-      const audioBlob = await response.blob();
-      const audioUrl = URL.createObjectURL(audioBlob);
-      audioUrlRef.current = audioUrl;
-
-      const audio = new Audio(audioUrl);
-      audioRef.current = audio;
-      
-      audio.onplay = () => {
-        setIsPlaying(true);
-        setIsLoading(false);
-      };
-
-      audio.onended = () => {
-        setIsPlaying(false);
-        URL.revokeObjectURL(audioUrl);
-        audioUrlRef.current = null;
-        audioRef.current = null;
-        if (onComplete) {
-          onComplete();
-        }
-      };
-
-      audio.onerror = () => {
-        setIsPlaying(false);
-        setIsLoading(false);
-        const errorMsg = 'Erro ao reproduzir áudio';
-        setError(errorMsg);
-        URL.revokeObjectURL(audioUrl);
-        audioUrlRef.current = null;
-        audioRef.current = null;
-        if (onError) {
-          onError(errorMsg);
-        }
-      };
-
-      await audio.play();
-      return audio;
+      return null; // Web Speech API não retorna Audio element
     } catch (err: any) {
       setIsLoading(false);
       const errorMsg = err.message || 'Erro ao gerar áudio';
@@ -189,26 +206,23 @@ export function useTextToSpeech({ onComplete, onError }: UseTextToSpeechOptions 
   };
 
   const stop = () => {
-    if (USE_MOCKS) {
-      // Parar Web Speech API
-      if ('speechSynthesis' in window) {
-        speechSynthesis.cancel();
-      }
+    // Parar áudio tradicional (Eleven Labs)
+    if (audioRef.current) {
+      audioRef.current.pause();
+      audioRef.current.currentTime = 0;
       setIsPlaying(false);
-    } else {
-      // Parar áudio tradicional
-      if (audioRef.current) {
-        audioRef.current.pause();
-        audioRef.current.currentTime = 0;
-        setIsPlaying(false);
-        audioRef.current = null;
-      }
-      // Limpar URL do blob
-      if (audioUrlRef.current) {
-        URL.revokeObjectURL(audioUrlRef.current);
-        audioUrlRef.current = null;
-      }
+      audioRef.current = null;
     }
+    // Limpar URL do blob
+    if (audioUrlRef.current) {
+      URL.revokeObjectURL(audioUrlRef.current);
+      audioUrlRef.current = null;
+    }
+    // Parar Web Speech API (fallback)
+    if ('speechSynthesis' in window) {
+      speechSynthesis.cancel();
+    }
+    setIsPlaying(false);
   };
 
   return {
