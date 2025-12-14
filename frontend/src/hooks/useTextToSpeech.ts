@@ -58,21 +58,42 @@ export function useTextToSpeech({ onComplete, onError }: UseTextToSpeechOptions 
           throw new Error('Web Speech API não suportada neste navegador');
         }
 
+        // Função para configurar voz (pode precisar aguardar vozes carregarem)
+        const setupVoice = (utterance: SpeechSynthesisUtterance) => {
+          const voices = speechSynthesis.getVoices();
+          const ptBRVoice = voices.find(v => 
+            v.lang.includes('pt-BR') || 
+            v.lang.includes('pt') || 
+            v.name.includes('Brazil') ||
+            v.name.includes('Portuguese')
+          );
+          if (ptBRVoice) {
+            utterance.voice = ptBRVoice;
+            console.log('✅ Voz selecionada:', ptBRVoice.name);
+          } else if (voices.length > 0) {
+            // Fallback: usar primeira voz disponível
+            utterance.voice = voices[0];
+            console.log('⚠️ Voz PT-BR não encontrada, usando:', voices[0].name);
+          }
+          utterance.lang = 'pt-BR';
+          utterance.rate = 0.9; // Velocidade ligeiramente mais lenta
+          utterance.pitch = 1.0;
+          utterance.volume = 1.0;
+        };
+
         // Criar utterance
         const utterance = new SpeechSynthesisUtterance(text);
         
-        // Configurar voz (tentar português brasileiro)
-        const voices = speechSynthesis.getVoices();
-        const ptBRVoice = voices.find(v => 
-          v.lang.includes('pt-BR') || v.lang.includes('pt') || v.name.includes('Brazil')
-        );
-        if (ptBRVoice) {
-          utterance.voice = ptBRVoice;
+        // Tentar configurar voz imediatamente
+        setupVoice(utterance);
+        
+        // Se vozes ainda não carregaram, aguardar evento
+        if (speechSynthesis.getVoices().length === 0) {
+          speechSynthesis.onvoiceschanged = () => {
+            setupVoice(utterance);
+            speechSynthesis.onvoiceschanged = null; // Limpar listener
+          };
         }
-        utterance.lang = 'pt-BR';
-        utterance.rate = 0.9; // Velocidade ligeiramente mais lenta
-        utterance.pitch = 1.0;
-        utterance.volume = 1.0;
 
         // Simular loading
         setIsLoading(false);
