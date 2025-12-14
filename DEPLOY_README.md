@@ -28,11 +28,9 @@ Este projeto está configurado para deploy em:
 4. Configure:
    - **Root Directory:** `frontend`
    - **Framework Preset:** Vite (detectado automaticamente)
-5. Adicione variáveis de ambiente:
-   ```
-   VITE_API_URL=https://dirce-backend.onrender.com
-   VITE_GOOGLE_MAPS_API_KEY=sua_chave_aqui
-   ```
+5. Adicione variáveis de ambiente (veja `frontend/DEPLOY_VERCEL.md`):
+   - **Obrigatória:** `VITE_API_URL` (URL do backend no Render)
+   - **Opcional:** `VITE_GOOGLE_MAPS_API_KEY` (chave do Google Maps)
 6. Deploy!
 
 ### 3. Atualizar CORS do Backend
