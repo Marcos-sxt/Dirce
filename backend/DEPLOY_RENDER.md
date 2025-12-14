@@ -1,89 +1,152 @@
-# 🚀 Deploy Backend no Render
+# 🚀 Deploy Backend no Render - Dirce
 
-## Configuração
+## 📋 Variáveis de Ambiente Necessárias
 
-### 1. Criar Web Service no Render
+### ✅ Obrigatórias
+
+**`NODE_ENV`**
+- Valor: `production`
+- Define o ambiente de produção
+
+**`PORT`**
+- Valor: `10000` (ou deixe o Render definir automaticamente)
+- Porta onde o backend vai rodar
+
+**`ELEVENLABS_API_KEY`**
+- Chave da API do Eleven Labs para TTS
+- Obtenha em: https://elevenlabs.io/app/settings/api-keys
+- **⚠️ IMPORTANTE:** Sem essa chave, o TTS não funcionará
+
+**`FRONTEND_URL`**
+- URL do frontend no Vercel
+- Exemplo: `https://dirce.vercel.app`
+- Usado para configurar CORS
+- **⚠️ IMPORTANTE:** Atualize após fazer deploy do frontend
+
+## 🎯 Passo a Passo no Render
+
+### 1. Criar Web Service
 
 1. Acesse https://render.com
-2. Clique em "New +" → "Web Service"
-3. Conecte seu repositório GitHub
-4. Selecione o repositório `Dirce`
+2. Clique em **"New +"** → **"Web Service"** (NÃO "Blueprint")
+3. Conecte o repositório `Marcos-sxt/Dirce`
+4. Branch: `deploy`
 
-### 2. Configurações do Serviço
+### 2. Configurações Básicas
 
 - **Name:** `dirce-backend`
 - **Environment:** `Node`
-- **Region:** Escolha a mais próxima (ex: `Oregon (US West)`)
-- **Branch:** `deploy` (ou `main`)
-- **Root Directory:** `backend`
-- **Build Command:** `npm install && npm run build`
-- **Start Command:** `npm run start:prod`
+- **Region:** Escolha a mais próxima ao Brasil
+- **Branch:** `deploy`
+- **Root Directory:** `backend` ⚠️ **CRÍTICO**
 
-### 3. Variáveis de Ambiente
+### 3. Build & Start Commands
 
-Configure as seguintes variáveis no Render:
-
+**Build Command:**
 ```
-NODE_ENV=production
-PORT=10000
-DATABASE_URL=postgresql://... (Render cria automaticamente se usar PostgreSQL)
-ELEVENLABS_API_KEY=sua_chave_aqui
-STELLAR_SECRET_KEY=sua_chave_aqui
-STELLAR_NETWORK=testnet
-FRONTEND_URL=https://seu-app.vercel.app
+npm run build:render
 ```
 
-### 4. Banco de Dados PostgreSQL (Opcional)
-
-Se precisar de banco de dados:
-
-1. No Render, clique em "New +" → "PostgreSQL"
-2. Configure o banco
-3. Copie a `DATABASE_URL` gerada
-4. Use essa URL na variável `DATABASE_URL` do Web Service
-
-### 5. Migrations e Seed
-
-Após o primeiro deploy, você pode executar migrations via SSH ou adicionar ao build:
-
-**Opção 1: Via SSH (Recomendado)**
-```bash
-# Conectar via SSH no Render
-cd backend
-npx prisma migrate deploy
-npx prisma db seed
+**Start Command:**
+```
+npm run start:prod
 ```
 
-**Opção 2: Adicionar ao build (Automático)**
-Adicione ao `package.json`:
-```json
-"postbuild": "npx prisma migrate deploy && npx prisma db seed"
+### 4. Adicionar Variáveis de Ambiente
+
+No Render, vá em **Environment** e adicione:
+
+```
+NODE_ENV = production
+PORT = 10000
+ELEVENLABS_API_KEY = sua_chave_elevenlabs_aqui
+FRONTEND_URL = https://placeholder.vercel.app
 ```
 
-### 6. Deploy
+**⚠️ IMPORTANTE:**
+- Substitua `sua_chave_elevenlabs_aqui` pela chave real
+- `FRONTEND_URL` pode ser um placeholder inicial, mas atualize após o deploy do frontend
 
-1. Clique em "Create Web Service"
-2. Aguarde o build e deploy
-3. Copie a URL gerada (ex: `https://dirce-backend.onrender.com`)
+### 5. Deploy
 
-### 7. Configurar Frontend
+1. Clique em **"Create Web Service"**
+2. Aguarde o build (pode levar alguns minutos)
+3. Copie a URL do serviço (ex: `https://dirce-backend.onrender.com`)
 
-No Vercel, adicione a variável:
+### 6. Atualizar Frontend
+
+No Vercel, atualize a variável:
+
 ```
-VITE_API_URL=https://dirce-backend.onrender.com
+VITE_API_URL = https://dirce-backend.onrender.com
 ```
 
-## Troubleshooting
+## ✅ Checklist
 
-### Erro: "Cannot find module"
-- Verifique se o `Root Directory` está como `backend`
-- Verifique se todas as dependências estão no `package.json`
+- [ ] Web Service criado no Render
+- [ ] Root Directory: `backend`
+- [ ] Build Command: `npm run build:render`
+- [ ] Start Command: `npm run start:prod`
+- [ ] `NODE_ENV` configurada
+- [ ] `PORT` configurada (ou deixar automático)
+- [ ] `ELEVENLABS_API_KEY` configurada
+- [ ] `FRONTEND_URL` configurada (atualizar após deploy do frontend)
+- [ ] Build funcionando
+- [ ] URL do backend copiada
+- [ ] `VITE_API_URL` atualizada no Vercel
 
-### Erro: "Database connection failed"
-- Verifique se `DATABASE_URL` está configurada corretamente
-- Verifique se o banco está acessível
+## 🐛 Troubleshooting
 
-### Erro: "CORS"
-- Verifique se `FRONTEND_URL` está configurada com a URL do Vercel
-- Verifique se a URL do Vercel está no formato correto (https://)
+### Build Fails: "nest: not found"
 
+**Causa:** O Render não está encontrando o `nest` CLI.
+
+**Solução:** O script `build:render` já resolve isso usando `npx nest build`. Certifique-se de que o Build Command está como:
+```
+npm run build:render
+```
+
+### Build Fails: "stations.json not found"
+
+**Causa:** O arquivo JSON não está sendo copiado para o `dist`.
+
+**Solução:** O `nest-cli.json` já está configurado para copiar JSONs. Verifique se o arquivo existe em `backend/src/data/stations.json`.
+
+### CORS Error
+
+**Causa:** O `FRONTEND_URL` não está configurado corretamente.
+
+**Solução:**
+- Verifique se `FRONTEND_URL` está no formato `https://seu-app.vercel.app`
+- Verifique se a URL do Vercel está correta
+- O backend aceita automaticamente qualquer domínio `.vercel.app`
+
+### Port Already in Use
+
+**Causa:** Conflito de porta.
+
+**Solução:** Deixe o Render definir a porta automaticamente (remova `PORT` ou use `10000`).
+
+### Eleven Labs API Error
+
+**Causa:** Chave inválida ou sem créditos.
+
+**Solução:**
+- Verifique se a chave está correta
+- Verifique se há créditos na conta do Eleven Labs
+- Teste a chave localmente primeiro
+
+## 📝 Notas
+
+- O Render executa `npm install` automaticamente antes do build
+- O script `build:render` garante que devDependencies sejam instaladas
+- O `stations.json` é carregado automaticamente do arquivo estático
+- Não é necessário banco de dados (usamos JSON)
+- Não é necessário Stellar (está mockado)
+
+## 🔄 Após Deploy do Frontend
+
+1. Copie a URL do Vercel (ex: `https://dirce.vercel.app`)
+2. No Render, atualize `FRONTEND_URL` com essa URL
+3. Faça um novo deploy ou reinicie o serviço
+4. Teste a conexão entre frontend e backend
