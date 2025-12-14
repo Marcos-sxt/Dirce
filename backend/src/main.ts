@@ -8,18 +8,51 @@ async function bootstrap() {
   
   // Habilitar CORS para o frontend
   const frontendUrl = configService.get('FRONTEND_URL');
-  const allowedOrigins = frontendUrl 
-    ? [frontendUrl]
-    : ['http://localhost:3000', 'http://localhost:8080', 'http://localhost:5173']; // Suporta Next.js, Vite padrão, e Vite customizado
+  const isProduction = configService.get('NODE_ENV') === 'production';
+  
+  // Em produção, aceitar domínios do Vercel e o FRONTEND_URL configurado
+  // Em desenvolvimento, aceitar localhost
+  const allowedOrigins = isProduction
+    ? [
+        frontendUrl,
+      ].filter(Boolean)
+    : ['http://localhost:3000', 'http://localhost:8080', 'http://localhost:5173'];
   
   app.enableCors({
     origin: (origin, callback) => {
-      // Em desenvolvimento, aceitar localhost em qualquer porta
-      if (!origin || allowedOrigins.includes(origin) || origin.startsWith('http://localhost:')) {
+      // Sem origin (ex: mobile apps, Postman)
+      if (!origin) {
         callback(null, true);
-      } else {
-        callback(new Error('Not allowed by CORS'));
+        return;
       }
+      
+      // Em desenvolvimento, aceitar localhost em qualquer porta
+      if (!isProduction && origin.startsWith('http://localhost:')) {
+        callback(null, true);
+        return;
+      }
+      
+      // Em produção, verificar se está na lista permitida ou é Vercel
+      if (isProduction) {
+        // Aceitar qualquer domínio do Vercel
+        const isVercel = origin.includes('.vercel.app');
+        
+        // Verificar se está na lista de origens permitidas
+        const isAllowed = allowedOrigins.some(allowed => origin === allowed);
+        
+        if (isVercel || isAllowed) {
+          callback(null, true);
+          return;
+        }
+      } else {
+        // Desenvolvimento: aceitar se estiver na lista
+        if (allowedOrigins.includes(origin)) {
+          callback(null, true);
+          return;
+        }
+      }
+      
+      callback(new Error('Not allowed by CORS'));
     },
     credentials: true,
   });
