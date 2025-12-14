@@ -6,7 +6,6 @@ import { StationsModule } from './stations/stations.module';
 import { ElevenlabsModule } from './elevenlabs/elevenlabs.module';
 import { StellarModule } from './stellar/stellar.module';
 import { TransactionsModule } from './transactions/transactions.module';
-import { PrismaService } from './prisma/prisma.service';
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -19,6 +18,6 @@ import { PrismaService } from './prisma/prisma.service';
     TransactionsModule,
   ],
   controllers: [AppController],
-  providers: [AppService, PrismaService],
+  providers: [AppService],
 })
 export class AppModule {}

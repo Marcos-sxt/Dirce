@@ -1,6 +1,6 @@
 import { Injectable, BadRequestException } from '@nestjs/common';
-import { PrismaService } from '../prisma/prisma.service';
 import { StellarService } from '../stellar/stellar.service';
+import { StationsService } from '../stations/stations.service';
 import { ConfigService } from '@nestjs/config';
 
 @Injectable()
@@ -8,9 +8,11 @@ export class TransactionsService {
   // Para demo: armazenar secret keys em memória (NÃO usar em produção!)
   // Em produção, usar custódia externa ou hardware wallet
   private readonly demoUserSecrets: Map<string, string> = new Map();
+  // Mock: armazenar transações em memória
+  private readonly transactions: any[] = [];
 
   constructor(
-    private prisma: PrismaService,
+    private stationsService: StationsService,
     private stellarService: StellarService,
     private configService: ConfigService,
   ) {
@@ -56,10 +58,8 @@ export class TransactionsService {
     stationId: string,
     amount: number,
   ) {
-    // Buscar estação
-    const station = await this.prisma.station.findUnique({
-      where: { id: stationId },
-    });
+    // Buscar estação (mock - usando StationsService)
+    const station = await this.stationsService.findById(stationId);
 
     if (!station) {
       throw new BadRequestException('Estação não encontrada');
@@ -93,16 +93,18 @@ export class TransactionsService {
         amount,
       );
 
-      // Salvar transação no banco
-      const transaction = await this.prisma.transaction.create({
-        data: {
-          stellarTxHash: txHash,
-          userWallet,
-          stationId,
-          amount,
-          status: 'confirmed', // Stellar confirma em ~5 segundos
-        },
-      });
+      // Salvar transação (mock - em memória)
+      const transaction = {
+        id: `tx_${Date.now()}`,
+        stellarTxHash: txHash,
+        userWallet,
+        stationId,
+        amount,
+        status: 'confirmed', // Stellar confirma em ~5 segundos
+        createdAt: new Date(),
+      };
+      
+      this.transactions.push(transaction);
 
       return {
         ...transaction,
@@ -129,24 +131,25 @@ export class TransactionsService {
   }
 
   /**
-   * Lista transações de um usuário
+   * Lista transações de um usuário (mock - em memória)
    */
   async getUserTransactions(userWallet: string) {
-    return this.prisma.transaction.findMany({
-      where: { userWallet },
-      include: { station: true },
-      orderBy: { createdAt: 'desc' },
-    });
+    return this.transactions
+      .filter(tx => tx.userWallet === userWallet)
+      .sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime())
+      .map(tx => ({
+        ...tx,
+        station: this.stationsService.findById(tx.stationId),
+      }));
   }
 
   /**
-   * Lista transações de uma estação
+   * Lista transações de uma estação (mock - em memória)
    */
   async getStationTransactions(stationId: string) {
-    return this.prisma.transaction.findMany({
-      where: { stationId },
-      orderBy: { createdAt: 'desc' },
-    });
+    return this.transactions
+      .filter(tx => tx.stationId === stationId)
+      .sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime());
   }
 
   /**
