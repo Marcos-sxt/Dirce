@@ -121,29 +121,29 @@ const Navigation = () => {
   }
 
   return (
-    <div className="min-h-screen bg-background flex flex-col">
-      {/* Header */}
-      <header className="bg-primary text-primary-foreground p-4">
+    <div className="h-screen bg-background flex flex-col overflow-hidden">
+      {/* Header - Compacto */}
+      <header className="bg-primary text-primary-foreground p-2 flex-shrink-0">
         <div className="max-w-lg mx-auto">
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2">
             <DirceAvatar size="sm" speaking />
-            <div className="flex-1">
-              <h1 className="font-bold text-lg">Navegando...</h1>
-              <p className="text-primary-foreground/80 text-sm">{station.name}</p>
+            <div className="flex-1 min-w-0">
+              <h1 className="font-bold text-base truncate">Navegando...</h1>
+              <p className="text-primary-foreground/80 text-xs truncate">{station.name}</p>
             </div>
-            <div className="flex items-center gap-1 text-primary-foreground/80">
-              <Volume2 className="w-5 h-5" />
-              <span className="text-sm">Voz ativa</span>
+            <div className="flex items-center gap-1 text-primary-foreground/80 flex-shrink-0">
+              <Volume2 className="w-4 h-4" />
+              <span className="text-xs hidden sm:inline">Voz ativa</span>
             </div>
           </div>
         </div>
       </header>
 
-      {/* Map */}
-      <div className="flex-1 relative">
+      {/* Map - Ocupa todo o espaço disponível */}
+      <div className="flex-1 relative min-h-0">
         <iframe
           src={getMapsEmbedUrl()}
-          className="w-full h-full min-h-[300px] border-0"
+          className="w-full h-full border-0"
           allowFullScreen
           loading="lazy"
           referrerPolicy="no-referrer-when-downgrade"
@@ -153,43 +153,43 @@ const Navigation = () => {
         {/* Overlay button to open in Maps app */}
         <button
           onClick={openInMaps}
-          className="absolute bottom-4 right-4 bg-card text-foreground px-4 py-2 rounded-lg shadow-card text-sm font-medium hover:bg-muted transition-colors"
+          className="absolute bottom-4 right-4 bg-card text-foreground px-3 py-2 rounded-lg shadow-lg text-xs font-medium hover:bg-muted transition-colors z-10"
         >
-          Abrir no Google Maps
+          Abrir no Maps
         </button>
       </div>
 
-      {/* Destination card */}
-      <div className="bg-card border-t border-border p-4">
+      {/* Destination card - Compacto */}
+      <div className="bg-card border-t border-border p-3 flex-shrink-0">
         <div className="max-w-lg mx-auto">
-          <div className="flex items-center gap-3 mb-4">
-            <div className="w-10 h-10 rounded-lg bg-dirce-green-light flex items-center justify-center">
-              <MapPin className="w-5 h-5 text-primary" />
+          <div className="flex items-center gap-2 mb-3">
+            <div className="w-8 h-8 rounded-lg bg-dirce-green-light flex items-center justify-center flex-shrink-0">
+              <MapPin className="w-4 h-4 text-primary" />
             </div>
-            <div className="flex-1">
-              <p className="font-semibold text-foreground">{station.name}</p>
-              <p className="text-muted-foreground text-sm">{station.address}</p>
+            <div className="flex-1 min-w-0">
+              <p className="font-semibold text-foreground text-sm truncate">{station.name}</p>
+              <p className="text-muted-foreground text-xs truncate">{station.address}</p>
             </div>
           </div>
 
           {/* Action buttons */}
-          <div className="flex gap-3">
+          <div className="flex gap-2">
             <Button
               variant="cancel"
               size="lg"
               onClick={handleCancel}
-              className="flex-1"
+              className="flex-1 text-sm"
             >
-              <X className="w-5 h-5" />
+              <X className="w-4 h-4" />
               Cancelar
             </Button>
             <Button
               variant="action"
               size="lg"
               onClick={handleArrived}
-              className="flex-1"
+              className="flex-1 text-sm"
             >
-              <MapPin className="w-5 h-5" />
+              <MapPin className="w-4 h-4" />
               Cheguei!
             </Button>
           </div>
